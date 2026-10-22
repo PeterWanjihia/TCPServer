@@ -15,6 +15,13 @@ func handleConnection(conn net.Conn) {
 
 		if n > 0 {
 			fmt.Printf("[%s] Received: %q\n", conn.RemoteAddr(), buffer[:n])
+
+			written, writeErr := conn.Write(buffer[:n])
+			if writeErr != nil {
+				fmt.Println("Write failed:", writeErr)
+				return
+			}
+			fmt.Printf("Echoed %d bytes\n", written)
 		}
 		if err != nil {
 			fmt.Println("Read stopped:", err)
